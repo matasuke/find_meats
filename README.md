@@ -1,19 +1,18 @@
 # meats_detector
 
 ## annotation
+Use python3 for annotation.
 ```
-pyenv virtualenv 3.6.5 meat_detector
-pyenv local meat_detector
-pip install -r requirements.txt
+pip install 'pip==18.0'
+pip install pipenv
+pipenv install
 ```
 
-move videos into datasources/movies/
+move all videos to be edit into data/movies/
 
 run
 ```
-python data/split_videos.py \\
---source_path datasource/movies/<video_name>
---target_dir datasource/processed/<video_name> \\
---num_fps 1
+pipenv run python meats_detector/data/split_videos.py \\
 ```
 
+all splitted frames are saved in data/processed/

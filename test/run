@@ -1,0 +1,21 @@
+#/bin/sh
+
+if [ $# -eq 1 ]; then
+    echo '# flake8 ################################'
+    flake8 $1
+    echo ''
+    echo '# mypy ##################################'
+    mypy --ignore-missing $1
+    echo ''
+    echo '# test ##################################'
+    pytest $1
+else
+    echo '# flake8 ################################'
+    flake8 ./
+    echo ''
+    echo '# mypy ##################################'
+    mypy --ignore-missing ./
+    echo ''
+    echo '# test ##################################'
+    pytest
+fi
