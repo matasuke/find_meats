@@ -9,12 +9,16 @@ lint = "flake8"
 jupyternb = "jupyter notebook"
 
 [packages]
+cython = '*'
+dlib = '*'
 flake8 = "*"
 mypy = "*"
 imageio = "*"
 scikit-image = "*"
 tqdm = "*"
 jupyter = "*"
+opencv-python = "*"
+numpy = "*"
 
 
 [dev-packages]
