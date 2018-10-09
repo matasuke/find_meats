@@ -4,9 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [scripts]
-test = "python -m test.run"
-lint = "flake8"
-jupyternb = "jupyter notebook"
+test = "pytest"
+jupyter = "jupyter notebook"
 
 [packages]
 cython = '*'
@@ -19,6 +18,7 @@ mypy = "*"
 numpy = "*"
 scikit-image = "*"
 opencv-python = "*"
+pytest = "*"
 tqdm = "*"
 
 [dev-packages]

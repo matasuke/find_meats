@@ -70,7 +70,7 @@ def split_video(
 def get_all_files(
         base_dir: Union[str, Path],
         allowed_suffix: List[str]=DEFAULT_SUFFIX,
-) -> List[str]:
+) -> List[Path]:
     '''
     get all directories recursively.
 
@@ -104,7 +104,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.width and args.height:
-        resize = (args.width, args.height)
+        resize: Union[Tuple, None] = (args.width, args.height)
     else:
         resize = None
 
@@ -118,11 +118,15 @@ if __name__ == '__main__':
     else:
         all_target_dirs = [args.target_path]
 
+    # create label directories.
     if args.label_dir is not None:
         all_label_dirs = [
-            args.label_dir / video_files.relative_to(source_path).parent for video_files in all_video_files
+            Path(args.label_dir) / video_files.relative_to(source_path).with_suffix("")
+            for video_files in all_video_files
         ]
-        print(all_label_dirs)
+        for label_dir in all_label_dirs:
+            if not label_dir.exists():
+                label_dir.mkdir(parents=True)
 
     for video_file, target_dir in zip(all_video_files, all_target_dirs):
         split_video(video_file, target_dir, args.num_fps, resize)

@@ -162,3 +162,15 @@ HOG特徴量などの局所特徴量を用いて物体検出し、CNNを用い�
 ```
 ./boxesCvtPascaltoDlib.py <path/to/pascal/boxes> <path/to/img/folder> --out out.xml
 ```
+
+
+## pull requests
+pull requestsを送る際は、事前にtestを実行して下さい。
+本レポジトリのコードはflake8, mypy, pytestを採用しています。
+コードを追加した際は'./test/lint'を実行してエラーが発生しないことを確認して下さい。
+
+
+testコードを書いた場合は、'./test/run'を実装して全てのテストケースを突破できることを確認して下さい。
+
+
+pull requestsのコードレビューを受けてOKが出た場合は、自身でmergeしてください。
