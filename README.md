@@ -114,9 +114,9 @@ fpsあたりのフレーム取得数を指定します。
 
 - 鳥
   - 生 raw_chickin
-  - 半焼け half_cooked_chickin
-  - 焼け cooked_chickin
-  - 焦げ over_cooked_chickin
+  - 半焼け half_cooked_chicken
+  - 焼け cooked_chicken
+  - 焦げ over_cooked_chicken
 
 
 現状ではSSDを用いて物体検出及び物体認識を行い、それぞれのクラスを分類する予定
