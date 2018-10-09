@@ -118,5 +118,11 @@ if __name__ == '__main__':
     else:
         all_target_dirs = [args.target_path]
 
+    if args.label_dir is not None:
+        all_label_dirs = [
+            args.label_dir / video_files.relative_to(source_path).parent for video_files in all_video_files
+        ]
+        print(all_label_dirs)
+
     for video_file, target_dir in zip(all_video_files, all_target_dirs):
         split_video(video_file, target_dir, args.num_fps, resize)

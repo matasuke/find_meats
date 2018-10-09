@@ -134,7 +134,7 @@ fpsあたりのフレーム取得数を指定します。
   - 焦げ over_cooked_pork
 
 - 鳥
-  - 生 raw_chickin
+  - 生 raw_chicken
   - 半焼け half_cooked_chicken
   - 焼け cooked_chicken
   - 焦げ over_cooked_chicken
@@ -144,7 +144,7 @@ fpsあたりのフレーム取得数を指定します。
 'data/labelimg/predefined_classes.txt'を上記のものと置き換えると良い。
 
 ```
-mv data/labelimg/predefined_classes.txt  <path>/<to>/<labelimg/data/predefined_classes.txt>
+cp data/labelimg/predefined_classes.txt  <path>/<to>/<labelimg/data/predefined_classes.txt>
 ```
 
 
