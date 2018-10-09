@@ -37,6 +37,7 @@
 動画をいくつかのフレームに分割して画像として保存する方法について記述します。
 準備として以下のコマンドを実行して下さい。
 ```
+brew install python3
 pip install 'pip==18.0'
 pip install pipenv
 pipenv install
@@ -89,7 +90,7 @@ fpsあたりのフレーム取得数を指定します。
 
 ###  実際のアノテーション作業について
 - アノテーションする動画ファイル名をslackに投げる
-- 保存先は'./data/labels/<video file>/'
+- 保存先は'./data/labels/video_name/'
 - 保存フォーマットはPascal.
 
 ### アノテーション時の注意点
