@@ -1,6 +1,7 @@
 ### https://raw.github.com/github/gitignore/9931a0607752664877a66bb220f11aa285dc1047/Python.gitignore
 
 data/
+!/find_meats/data/
 /tmp/*
 .DS_Store
 # Byte-compiled / optimized / DLL files
