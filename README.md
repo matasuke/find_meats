@@ -1,4 +1,4 @@
-# meats_detector
+# find_meats
 
 ## アノテーション
 
@@ -15,7 +15,7 @@ pipenv install
 動画を保存したら以下のコマンドを実行することで動画を分割することができます。
 
 ```
-pipenv run python meats_detector/data/split_videos.py \\
+pipenv run python find_meats/data/split_videos.py \\
 --source_path data/movies/ \\
 --target_path data/processed/ \\
 --width None \\
