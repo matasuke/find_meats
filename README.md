@@ -144,7 +144,7 @@ fpsあたりのフレーム取得数を指定します。
 'data/labelimg/predefined_classes.txt'を上記のものと置き換えると良い。
 
 ```
-mv data/labelimg/predefined_classes.txt  \<path\>/\<to\>/\<labelimg/data/predefined_classes.txt\>
+mv data/labelimg/predefined_classes.txt  <path>/<to>/<labelimg/data/predefined_classes.txt>
 ```
 
 
