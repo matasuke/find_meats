@@ -1,6 +1,5 @@
 ### https://raw.github.com/github/gitignore/9931a0607752664877a66bb220f11aa285dc1047/Python.gitignore
 
-data/
 !/find_meats/data/
 /tmp/*
 .DS_Store
@@ -18,7 +17,7 @@ __pycache__/
 *.jpg
 *.png
 *.xml
-
+*.txt
 
 # C extensions
 *.so
