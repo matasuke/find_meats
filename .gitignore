@@ -9,6 +9,17 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+
+# pictures and movies
+*.mp4
+*.MOV
+*.avi
+
+*.jpg
+*.png
+*.xml
+
+
 # C extensions
 *.so
 
