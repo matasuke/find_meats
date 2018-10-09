@@ -19,7 +19,7 @@ tqdm = "*"
 jupyter = "*"
 opencv-python = "*"
 numpy = "*"
-
+ffmpeg = "*"
 
 [dev-packages]
 

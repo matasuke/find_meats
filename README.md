@@ -135,9 +135,9 @@ fpsあたりのフレーム取得数を指定します。
 
 - 鳥
   - 生 raw_chickin
-  - 半焼け half_cooked_chickin
-  - 焼け cooked_chickin
-  - 焦げ over_cooked_chickin
+  - 半焼け half_cooked_chicken
+  - 焼け cooked_chicken
+  - 焦げ over_cooked_chicken
 
 
 'labelImg/data/predefined_classes.txt'を書き換えることで、Labelを特定のものだけに指定することが可能。
