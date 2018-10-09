@@ -90,6 +90,24 @@ fpsあたりのフレーム取得数を指定します。
 アノテーションにはLabelImgを使用します。
 インストール詳細については、[LabelImg](https://github.com/tzutalin/labelImg)参照。
 
+#### Hotkeys
+
+|   keys   |                    detail                 |
+|----------|-------------------------------------------|
+| Ctrl + u |  Load all of the images from a directory  |
+| Ctrl + r | Change the default annotation target dir  |
+| Ctrl + s |                  Save                     |
+| Ctrl + d |  Copy the current label and rect box      |
+|  Space   |  Flag the current image as verified       |
+|     w    |             Create a rect box             |
+|     d    |                 Next image                |
+|     a    |              Previous image               |
+|   del    |       Delete the selected rect box        |
+|  Ctrl++  |                 Zoom in                   |
+|  Ctrl--  |                 Zoom out                  |
+|  ↑→↓←    | Keyboard arrows to move selected rect box |
+
+
 ###  実際のアノテーション作業について
 - アノテーションする動画ファイル名をslackに投げる
 - 保存先は'./data/labels/video_name/'
@@ -120,6 +138,14 @@ fpsあたりのフレーム取得数を指定します。
   - 半焼け half_cooked_chickin
   - 焼け cooked_chickin
   - 焦げ over_cooked_chickin
+
+
+'labelImg/data/predefined_classes.txt'を書き換えることで、Labelを特定のものだけに指定することが可能。
+'data/labelimg/predefined_classes.txt'を上記のものと置き換えると良い。
+
+```
+mv data/labelimg/predefined_classes.txt  \<path\>/\<to\>/\<labelimg/data/predefined_classes.txt\>
+```
 
 
 現状ではSSDを用いて物体検出及び物体認識を行い、それぞれのクラスを分類する予定
