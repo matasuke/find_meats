@@ -1,0 +1,12 @@
+raw_beaf
+half_cooked_beaf
+cooked_beaf
+over_cooked_beaf
+raw_pork
+half_cooked_pork
+cooked_pork
+over_cooked_pork
+raw_chicken
+half_cooked_chicken
+cooked_chicken
+over_cooked_chicken
