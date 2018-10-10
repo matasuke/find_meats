@@ -3,7 +3,7 @@ import imageio
 import math
 from pathlib import Path
 import skimage.transform
-from typing import List, Tuple, Union
+from typing import Optional, List, Tuple, Union
 from tqdm import tqdm
 
 
@@ -19,7 +19,7 @@ def split_video(
         source_path: Union[str, Path],
         target_dir_path: Union[str, Path],
         num_fps: float=1,
-        resize: Union[Tuple, None]=DEFAULT_FRAME_SHAPE,
+        resize: Optional[Tuple]=DEFAULT_FRAME_SHAPE,
 ) -> None:
     '''
     split a video into frames designated fps each.
@@ -104,7 +104,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.width and args.height:
-        resize: Union[Tuple, None] = (args.width, args.height)
+        resize: Optional[Tuple] = (args.width, args.height)
     else:
         resize = None
 
