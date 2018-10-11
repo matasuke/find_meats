@@ -120,7 +120,7 @@ fpsあたりのフレーム取得数を指定します。
 - 保存フォーマットはPascal.
 
 ### アノテーション時の注意点
-- [VOC2007 annotation guidelines](http://host.robots.ox.ac.uk/pascal/VOC/voc2007/guidelines.html)
+- [VOC2007 annotation guidelines](http://host.robots.ox.ac.uk/pascal/VOC/voc2007/guidelines.html)のannotation guidelinesに基づきアノテーションを行う。
 - bounding boxを作成する際、画像外に及ばないようにする。
 - 可能ならば枠ギリギリをせめない
 - 複数のbounding boxを一枚の画像内で作成する場合、それぞれのbounding boxの形を似たものにする。
