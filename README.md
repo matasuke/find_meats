@@ -138,7 +138,7 @@ fpsあたりのフレーム取得数を指定します。
 - 保存フォーマットはPascal.
 
 ### アノテーション時の注意点
-- [VOC2007 annotation guidelines](http://host.robots.ox.ac.uk/pascal/VOC/voc2007/guidelines.html)のannotation guidelinesに基づきアノテーションを行う。
+- [VOC2007 annotation guidelines](http://host.robots.ox.ac.uk/pascal/VOC/voc2007/guidelines.html)及び[VOC2012 annotation guidelines](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/guidelines.html)のannotation guidelinesに基づきアノテーションを行う。
 
 - bounding boxは対象の全ピクセルを含む必要があるが、極度に大きすぎないように
 - bounding boxは画像からはみ出さないように
@@ -153,7 +153,7 @@ fpsあたりのフレーム取得数を指定します。
 #### ラベル対象の肉
 - 後述するラベル詳細に記載される全ての肉
 - めちゃくちゃ小さい肉以外
-- 10~20%以上が見えている肉
+- 20%以上が見えている肉
 
 
 ### ラベル詳細
