@@ -1,6 +1,6 @@
 ### https://raw.github.com/github/gitignore/9931a0607752664877a66bb220f11aa285dc1047/Python.gitignore
 
-find_meats/detector/hog/*
+/find_meats/detector/hog/*
 
 !/find_meats/data/
 !data/labelimg/predefined_classes.txt
