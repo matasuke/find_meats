@@ -41,7 +41,7 @@ jobs:
       - run:
           name: run mypy
           command:
-            pipenv run mypy --ignore-missing ./find_meats/
+            pipenv run mypy --ignore-missing ./
       - run:
           name: run tests
           command: |
