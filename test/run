@@ -2,20 +2,20 @@
 
 if [ $# -eq 1 ]; then
     echo '# flake8 ################################'
-    flake8 $1
+    pipenv run flake8 $1
     echo ''
     echo '# mypy ##################################'
-    mypy --ignore-missing $1
+    pipenv run mypy --ignore-missing $1
     echo ''
     echo '# test ##################################'
-    pytest $1
+    pipenv run python -m pytest $1
 else
     echo '# flake8 ################################'
-    flake8 ./
+    pipenv run flake8 ./
     echo ''
     echo '# mypy ##################################'
-    mypy --ignore-missing ./
+    pipenv run mypy --ignore-missing ./
     echo ''
     echo '# test ##################################'
-    pytest
+    pipenv run python -m pytest -v
 fi
