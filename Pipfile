@@ -6,6 +6,7 @@ name = "pypi"
 [scripts]
 test = "pytest"
 jupyter = "jupyter notebook"
+get_coverage = "python -m pytest --cov=./"
 
 [packages]
 codecov = "*"
