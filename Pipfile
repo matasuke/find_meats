@@ -20,7 +20,7 @@ scikit-image = "*"
 opencv-python = "*"
 pytest = "*"
 tqdm = "*"
-"ssd-tensorflow" = {path = "git+https://github.com/balancap/SSD-Tensorflow.git"}
+#"ssd-tensorflow" = {path = "git+https://github.com/balancap/SSD-Tensorflow.git"}
 
 [dev-packages]
 
