@@ -9,7 +9,7 @@ jupyter = "jupyter notebook"
 
 [packages]
 cython = '*'
-dlib = '*'
+#dlib = '*'
 ffmpeg = "*"
 flake8 = "*"
 imageio = "*"

@@ -1,4 +1,6 @@
+
 # find_meats
 
-Please refer to [wiki](https://github.com/matasuke/find_meats/wiki).
+[![CircleCI](https://circleci.com/gh/matasuke/find_meats.svg?style=svg&circle-token=46a7df08e92ac79d6e1fe41676781abf94fa21c9)](https://circleci.com/gh/matasuke/find_meats)
 
+Please refer to [wiki](https://github.com/matasuke/find_meats/wiki).
