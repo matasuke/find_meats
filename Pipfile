@@ -11,7 +11,7 @@ get_coverage = "python -m pytest --cov=./"
 [packages]
 codecov = "*"
 cython = '*'
-#dlib = '*'
+dlib = '*'
 ffmpeg = "*"
 flake8 = "*"
 imageio = "*"
