@@ -8,6 +8,7 @@ test = "pytest"
 jupyter = "jupyter notebook"
 
 [packages]
+codecov = "*"
 cython = '*'
 #dlib = '*'
 ffmpeg = "*"
@@ -19,6 +20,7 @@ numpy = "*"
 scikit-image = "*"
 opencv-python = "*"
 pytest = "*"
+pytest-cov = "*"
 tqdm = "*"
 #"ssd-tensorflow" = {path = "git+https://github.com/balancap/SSD-Tensorflow.git"}
 

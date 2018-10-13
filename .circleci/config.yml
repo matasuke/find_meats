@@ -45,7 +45,15 @@ jobs:
       - run:
           name: run tests
           command: |
-            pipenv run python -m pytest -vv
+            pipenv run python -m pytest
+      - run:
+          name: run tests
+          command: |
+            pipenv run python -m pytest --cov=./
+      - run:
+          name: codecov
+          command: |
+            pipenv run codecov --token='b3a42739-52f9-47a5-9636-581663b23886'
       - store_test_results:
           path: test-results
       - store_artifacts:
