@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d680db62c864175d7ffc201e11f20bb059a9670b01bbfaffacda713216657363"
+            "sha256": "22fd2904363c60a7d130f96e25210ae764979be2527ce95e3b772efe89ff19e0"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -729,9 +729,6 @@
                 "sha256:832dc0e10feb1aa2c68dcc57dbb658f1c7e65b9b61af69048abc87a2db00a0eb"
             ],
             "version": "==1.11.0"
-        },
-        "ssd-tensorflow": {
-            "path": "git+https://github.com/balancap/SSD-Tensorflow.git"
         },
         "terminado": {
             "hashes": [
