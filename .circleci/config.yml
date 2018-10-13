@@ -37,7 +37,7 @@ jobs:
       - run:
           name: run flake8
           command:
-            pienv run flake8
+            pipenv run flake8
       - run:
           name: run mypy
           command:
