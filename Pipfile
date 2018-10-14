@@ -7,6 +7,7 @@ name = "pypi"
 test = "pytest"
 jupyter = "jupyter notebook"
 get_coverage = "python -m pytest --cov=./"
+codecov = 'codecov --token="b3a42739-52f9-47a5-9636-581663b23886"'
 
 [packages]
 codecov = "*"
@@ -23,7 +24,6 @@ opencv-python = "*"
 pytest = "*"
 pytest-cov = "*"
 tqdm = "*"
-#"ssd-tensorflow" = {path = "git+https://github.com/balancap/SSD-Tensorflow.git"}
 
 [dev-packages]
 

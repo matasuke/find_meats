@@ -1,0 +1,3 @@
+[submodule "find_meats/SSD-Tensorflow"]
+	path = find_meats/SSD-Tensorflow
+	url = git@github.com:balancap/SSD-Tensorflow.git
