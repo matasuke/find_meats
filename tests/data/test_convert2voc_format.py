@@ -1,5 +1,7 @@
+import os
 from random import randint
 from pathlib import Path
+import pytest
 import xml.etree.ElementTree as ET
 from find_meats.data.convert2voc_format import (
     _process_annotation,
@@ -26,6 +28,9 @@ TEST_ANNOT_DIR = './tmp/data/labels'
 DATASET_NAME = 'MEAT_MASTER2018'
 TEST_OUTPUT_DIR = './tmp/data/%s' % DATASET_NAME
 
+app_env = os.environ.get("APP_ENV")
+
+@pytest.mark.skipif(app_env=='CI', reason="CI environment doesn't have tmp dir")
 def test_process_annotation(tmpdir):
     tmp_file = tmpdir.join('output.xml')
     tmp_file = Path(tmp_file)
@@ -72,6 +77,7 @@ def test_train_test_split_with_shuffle():
     assert len(train_list) == EXPECTED_TRAIN_NUM
     assert len(test_list) == EXPECTED_TEST_NUM
 
+@pytest.mark.skipif(app_env=='CI', reason="CI environment doesn't have tmp dir")
 def test_convert(tmpdir):
     source_annot_dir = Path(TEST_ANNOT_DIR)
     source_img_dir = Path(TEST_IMG_DIR)
@@ -87,6 +93,7 @@ def test_convert(tmpdir):
         assert target_annot_path.exists()
         assert target_img_path.exists()
 
+@pytest.mark.skipif(app_env=='CI', reason="CI environment doesn't have tmp dir")
 def test_prepare_dirs(tmpdir):
     EXPECTED_BASE_DIR = Path(tmpdir, TRAIN_DIR)
     EXPECTED_ANNOT_DIR = Path(EXPECTED_BASE_DIR, TARGET_ANNOT_DIR)
@@ -99,6 +106,7 @@ def test_prepare_dirs(tmpdir):
     assert target_aanot_dir == EXPECTED_ANNOT_DIR
     assert target_img_dir == EXPECTED_IMG_DIR
 
+@pytest.mark.skipif(app_env=='CI', reason="CI environment doesn't have tmp dir")
 def test_convert2voc_format(tmpdir):
     source_annot_dir = Path(TEST_ANNOT_DIR)
     source_annot_paths_len = len([annot_path for annot_path in source_annot_dir.glob(ANNOT_REG_EXP)])
