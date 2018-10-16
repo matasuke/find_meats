@@ -72,10 +72,10 @@ def get_all_files(
         allowed_suffix: List[str]=DEFAULT_SUFFIX,
 ) -> List[Path]:
     '''
-    get all directories recursively.
+    get all files recursively.
 
     :param base_dir: base directory to search sub directories.
-    :param allowed_suffix: suffix to be allowd as a video file.
+    :param allowed_suffix: suffix to be allowd.
     '''
     base_dir = Path(base_dir)
     video_path_list: List[Path] = []

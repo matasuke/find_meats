@@ -10,22 +10,22 @@ get_coverage = "python -m pytest --cov=./"
 codecov = 'codecov --token="b3a42739-52f9-47a5-9636-581663b23886"'
 
 [packages]
-codecov = "*"
 cython = '*'
 #dlib = '*'
 ffmpeg = "*"
-flake8 = "*"
 imageio = "*"
-jupyter = "*"
-mypy = "*"
 numpy = "*"
 scikit-image = "*"
 opencv-python = "*"
-pytest = "*"
-pytest-cov = "*"
 tqdm = "*"
 
 [dev-packages]
+codecov = "*"
+flake8 = "*"
+mypy = "*"
+jupyter = "*"
+pytest = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.6.5"
