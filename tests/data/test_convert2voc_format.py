@@ -32,7 +32,6 @@ app_env = os.environ.get('APP_ENV')
 
 @pytest.mark.skipif(app_env=='CI', reason="CI environment doesn't have tmp dir")
 def test_process_annotation(tmpdir):
-    print(ap_env)
     tmp_file = tmpdir.join('output.xml')
     tmp_file = Path(tmp_file)
 
