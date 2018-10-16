@@ -28,7 +28,7 @@ TEST_ANNOT_DIR = './tmp/data/labels'
 DATASET_NAME = 'MEAT_MASTER2018'
 TEST_OUTPUT_DIR = './tmp/data/%s' % DATASET_NAME
 
-app_env = os.environ.get("APP_ENV")
+app_env = os.environ.get('APP_ENV')
 
 @pytest.mark.skipif(app_env=='CI', reason="CI environment doesn't have tmp dir")
 def test_process_annotation(tmpdir):

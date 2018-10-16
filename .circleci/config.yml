@@ -15,7 +15,10 @@ jobs:
       - run: sudo chown -R circleci:circleci /usr/local/bin
       - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
       - run: export APP_ENV='CI' # check environment for test case.
-
+      - run:
+          name: check export
+          command: |
+            echo $APP_ENV
       - restore_cache:
           key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
       - run:
