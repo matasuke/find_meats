@@ -84,9 +84,12 @@ def _prepare_dirs(
     target_annot_dir = base_dir / TARGET_ANNOT_DIR
     target_img_dir = base_dir / TARGET_IMG_DIR
 
-    base_dir.mkdir(parents=True)
-    target_annot_dir.mkdir()
-    target_img_dir.mkdir()
+    if not base_dir.exists():
+        base_dir.mkdir(parents=True)
+    if not target_annot_dir.exists():
+        target_annot_dir.mkdir()
+    if not target_img_dir.exists():
+        target_img_dir.mkdir()
 
     return target_annot_dir, target_img_dir
 
@@ -109,7 +112,7 @@ def _convert(
         source_img_name = '**/%s' % annot_path.with_suffix(IMG_FORMAT).name
         source_img_path = [
             img_path for source_dir in source_img_dirs for img_path in source_dir.glob(source_img_name)
-        ][0]
+        ][0] or None
 
         if source_img_path:
             shutil.copy(source_img_path, target_img_path)
@@ -138,7 +141,6 @@ def convert2voc_format(
     target_base_dir = Path(output_dir) / dataset_name
 
     assert source_base_dir.exists()
-    assert not target_base_dir.exists()
     assert validation_size is None or isinstance(validation_size, int)
     assert test_size is None or isinstance(test_size, int)
 
