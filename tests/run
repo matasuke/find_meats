@@ -8,7 +8,7 @@ if [ $# -eq 1 ]; then
     pipenv run mypy --ignore-missing $1
     echo ''
     echo '# test ##################################'
-    pipenv run python -m pytest $1 -vv --duration=0
+    pipenv run pytest $1
 else
     echo '# flake8 ################################'
     pipenv run flake8 ./
@@ -17,5 +17,5 @@ else
     pipenv run mypy --ignore-missing ./
     echo ''
     echo '# test ##################################'
-    pipenv run python -m pytest -vv
+    pipenv run pytest
 fi

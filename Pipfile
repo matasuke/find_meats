@@ -7,17 +7,20 @@ name = "pypi"
 test = "pytest"
 jupyter = "jupyter notebook"
 get_coverage = "python -m pytest --cov=./"
+pytest = "python -m pytest -vv"
 codecov = 'codecov --token="b3a42739-52f9-47a5-9636-581663b23886"'
 
 [packages]
 cython = '*'
-#dlib = '*'
 ffmpeg = "*"
 imageio = "*"
 numpy = "*"
 scikit-image = "*"
 opencv-python = "*"
 tqdm = "*"
+PyYAML = "*"
+tensorflow = {version = "==1.11.0", sys_platform = "== 'darwin'"}
+tensorflow-gpu = {version = "==1.4.0", sys_platform = "== 'linux'"}
 
 [dev-packages]
 codecov = "*"

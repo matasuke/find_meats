@@ -1,5 +1,11 @@
 from pathlib import Path
 from typing import Union, List, Generator
+import json
+import yaml
+
+JSON_FORMAT = '.json'
+YAML_FORMAT = ['.yml', '.yaml']
+
 
 def generate_all_files(
     base_dir: Union[str, Path],
@@ -13,8 +19,8 @@ def generate_all_files(
     :param base_dir: base directory to get files recursively.
     :param allowed_suffix: suffix to be allowed.
     '''
-    base_dir = Path(base_dir)
-
+    if isinstance(base_dir, str):
+        base_dir = Path(base_dir)
     assert base_dir.exists()
     assert allowed_suffix is None or isinstance(allowed_suffix, list)
 
@@ -42,11 +48,12 @@ def get_all_files(
     :param base_dir: base directory to get files recursively.
     :param allowed_suffix: suffix to be allowd.
     '''
-    base_dir = Path(base_dir)
-    file_path_list: List[Path] = []
-
+    if isinstance(base_dir, str):
+        base_dir = Path(base_dir)
     assert base_dir.exists()
     assert allowed_suffix is None or isinstance(allowed_suffix, list)
+
+    file_path_list: List[Path] = []
 
     for p in base_dir.glob('*'):
         if p.is_dir():
@@ -58,3 +65,22 @@ def get_all_files(
                 file_path_list.append(p)
 
     return file_path_list
+
+def load_config(path: Union[str, Path]) -> Union['json', 'dict']:
+    '''
+    config loader for json and yaml format.
+
+    :param path: path to load.
+    :return: parsed config file.
+    '''
+    if isinstance(path, str):
+        path = Path(path)
+    assert path.exists()
+
+    with path.open() as f:
+        if path.suffix == JSON_FORMAT:
+            return json.load(f)
+        elif path.suffix in YAML_FORMAT:
+            return yaml.load(f)
+        else:
+            raise Exception('file_loader: config format is unknown.')
