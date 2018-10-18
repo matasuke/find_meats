@@ -154,10 +154,12 @@ class VocStatisticsGetter(BaseStatisticsGetter):
         # Find annotations.
         bboxes = []
         labels_text = []
-        difficult = []
-        truncated = []
+        difficult: List[int] = []
+        truncated: List[int] = []
 
         for obj in root.findall('object'):
+
+            # get name tag
             label = obj.find('name').text  # type:  ignore
             if label is None:
                 label_name = UNDEFINED_NAME
@@ -165,9 +167,21 @@ class VocStatisticsGetter(BaseStatisticsGetter):
                 label_name = label.text  # type:  ignore
             labels_text.append(label_name)
 
-            difficult.append(int(obj.find('difficult').text or 0))
-            truncated.append(int(obj.find('truncated').text or 0))
+            # get difficult tag
+            difficult_tag = obj.find('difficult')
+            if difficult_tag is None:
+                difficult.append(0)
+            else:
+                difficult.append(int(difficult_tag.text))  # type:  ignore
 
+            # get truncated tag
+            truncated_tag = obj.find('truncated')
+            if truncated is None:
+                truncated.append(0)
+            else:
+                truncated.append(int(truncated_tag.text))  # type:  ignore
+
+            # get bounding box tag
             bbox = obj.find('bndbox')
             if bbox is None:
                 bboxes.append(UNDEFINED_BBOX)

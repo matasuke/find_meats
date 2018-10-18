@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Union, List, Generator
+from typing import Union, List, Generator, Dict
 import json
 import yaml
 
@@ -66,7 +66,7 @@ def get_all_files(
 
     return file_path_list
 
-def load_config(path: Union[str, Path]) -> Union['json', 'dict']:
+def load_config(path: Union[str, Path]) -> Dict:
     '''
     config loader for json and yaml format.
 
