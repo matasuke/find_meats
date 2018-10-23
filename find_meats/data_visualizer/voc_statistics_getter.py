@@ -161,7 +161,7 @@ class VocStatisticsGetter(BaseStatisticsGetter):
             file_name = UNDEFINED_NAME
         else:
             annot_file_name = root.find('filename').text  # type: ignore
-            file_name = Path(annot_file_name).stem
+            file_name = Path(annot_file_name).stem  # type: ignore
 
         # Image shape
         if root.find('size') is None:

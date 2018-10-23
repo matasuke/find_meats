@@ -388,8 +388,8 @@ class BaseStatisticsGetter:
 
     def absolute2relative_bbox_position(
             self,
-            bboxes: List[ImgShape],
-            img_shape: Tuple[int, int, int],
+            bboxes: List[Coor],
+            img_shape: List[ImgShape],
             precision: int=3,
     ) -> List[Dict[str, float]]:
         '''
@@ -406,10 +406,10 @@ class BaseStatisticsGetter:
         for bbox in bboxes:
             relative_bboxes.append(
                 {
-                    BBOX_X_MIN: round(bbox[BBOX_X_MIN] / img_width, precision),
-                    BBOX_X_MAX: round(bbox[BBOX_X_MAX] / img_width, precision),
-                    BBOX_Y_MIN: round(bbox[BBOX_Y_MIN] / img_height, precision),
-                    BBOX_Y_MAX: round(bbox[BBOX_Y_MAX] / img_height, precision),
+                    BBOX_X_MIN: round(bbox[BBOX_X_MIN] / img_width, precision),  # type: ignore
+                    BBOX_X_MAX: round(bbox[BBOX_X_MAX] / img_width, precision),  # type: ignore
+                    BBOX_Y_MIN: round(bbox[BBOX_Y_MIN] / img_height, precision),  # type:  ignore
+                    BBOX_Y_MAX: round(bbox[BBOX_Y_MAX] / img_height, precision),  # type:  ignore
                 }
             )
 
