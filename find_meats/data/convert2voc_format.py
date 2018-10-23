@@ -99,6 +99,7 @@ def _convert(
         target_annot_dir: Path,
         target_img_dir: Path,
         dataset_name: str,
+        name_indexing: bool=True,
 ) -> None:
     if not isinstance(source_annot_paths, list):
         source_annot_paths = [source_annot_paths]
@@ -106,8 +107,12 @@ def _convert(
         source_img_dirs = [source_img_dirs]
 
     for index, annot_path in tqdm(enumerate(source_annot_paths)):
-        target_annot_path = _get_output_file_name(target_annot_dir, index, ANNOT_FORMAT)
-        target_img_path = _get_output_file_name(target_img_dir, index, IMG_FORMAT)
+        if name_indexing:
+            target_annot_path = _get_output_file_name(target_annot_dir, index, ANNOT_FORMAT)
+            target_img_path = _get_output_file_name(target_img_dir, index, IMG_FORMAT)
+        else:
+            target_annot_path = target_annot_dir / f'{annot_path.stem}{ANNOT_FORMAT}'
+            target_img_path = target_img_dir / f'{annot_path.stem}{IMG_FORMAT}'
 
         source_img_name = '**/%s' % annot_path.with_suffix(IMG_FORMAT).name
         source_img_path = [
@@ -124,6 +129,7 @@ def convert2voc_format(
         dataset_dir: str,
         output_dir: str,
         dataset_name: str='MEAT_MASTER2018',
+        name_indexing: bool=True,
         validation_size: Optional[int]=None,
         test_size: Optional[int]=None,
 ) -> None:
@@ -152,7 +158,14 @@ def convert2voc_format(
     )
     source_img_dirs = [source_base_dir / dir_name for dir_name in SORUCE_IMG_DIR]
 
-    _convert(source_annot_paths, source_img_dirs, target_annot_dir, target_img_dir, dataset_name)
+    _convert(
+        source_annot_paths,
+        source_img_dirs,
+        target_annot_dir,
+        target_img_dir,
+        dataset_name,
+        name_indexing,
+    )
 
 
 if __name__ == '__main__':
@@ -160,6 +173,7 @@ if __name__ == '__main__':
     parser.add_argument('--dataset_name', metavar='str', type=str, default='MEAT_MASTER2018')
     parser.add_argument('--output_dir', metavar='str', type=str, required=True)
     parser.add_argument('--dataset_dir', metavar='str', type=str, required=True)
+    parser.add_argument('--name_indexing', action='store_true')
     parser.add_argument('--validation_size', metavar='INT', type=int, default=None)
     parser.add_argument('--test_size', metavar='INT', type=int, default=None)
     args = parser.parse_args()
@@ -168,6 +182,7 @@ if __name__ == '__main__':
         dataset_dir=args.dataset_dir,
         output_dir=args.output_dir,
         dataset_name=args.dataset_name,
+        name_indexing=args.name_indexing,
         validation_size=args.validation_size,
         test_size=args.test_size,
     )

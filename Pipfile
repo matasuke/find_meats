@@ -25,6 +25,7 @@ tensorflow-gpu = {version = "==1.4.0", sys_platform = "== 'linux'"}
 [dev-packages]
 codecov = "*"
 flake8 = "*"
+pandas = "*"
 mypy = "*"
 jupyter = "*"
 pytest = "*"
