@@ -112,10 +112,9 @@ def _convert(
         source_img_name = '**/%s' % annot_path.with_suffix(IMG_FORMAT).name
         source_img_path = [
             img_path for source_dir in source_img_dirs for img_path in source_dir.glob(source_img_name)
-        ][0] or None
-
+        ] or None
         if source_img_path:
-            shutil.copy(source_img_path, target_img_path)
+            shutil.copy(source_img_path[0], target_img_path)
             _process_annotation(annot_path, target_annot_path, dataset_name)
 
 # TODO: apply exclusion file.

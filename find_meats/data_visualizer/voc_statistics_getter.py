@@ -218,10 +218,3 @@ class VocStatisticsGetter(BaseStatisticsGetter):
             bboxes.append(coor)
 
         return AnnotationInfo(file_name, shape, bboxes, labels_text, difficult, truncated)
-
-
-if __name__ == '__main__':
-    parser = ArgumentParser(description='get statistical information about specified dataset')
-    parser.add_argument('--dataset_dir', metavar='str', type=str, required=True)
-    parser.add_argument()
-    args = parser.parse_args()
