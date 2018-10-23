@@ -1,5 +1,8 @@
 from pathlib import Path
-from typing import Callable, Union, List, Mapping, Tuple, NamedTuple, Dict
+from typing import (
+    Callable, Union, List,
+    Tuple, NamedTuple, Dict, Optional
+)
 from tqdm import tqdm
 
 ANNOTATION_DIR = 'Annotations'
@@ -11,10 +14,13 @@ BBOX_X_MAX = 'xmax'
 BBOX_Y_MIN = 'ymin'
 BBOX_Y_MAX = 'ymax'
 
+# alias for typing
+Coor = Optional[Dict[str, int]]
+CoorList = List[Coor]
+ImgShape = Optional[Tuple[int, int, int]]
+
 # replacement of undefined name
 UNDEFINED_NAME = 'UNDEFINED'
-UNDEFINED_SHAPE = (-1, -1, -1)
-UNDEFINED_BBOX = {BBOX_X_MIN: -1, BBOX_X_MAX: -1, BBOX_Y_MIN: -1, BBOX_Y_MAX: -1}
 
 class BaseStatisticsGetter:
     __slots__ = [
@@ -22,8 +28,10 @@ class BaseStatisticsGetter:
         '_filenames',
         '_label2filenames',
         '_label2objects_num',
-        '_label2images_num',
-        '_image2objects',
+        '_filename2objects',
+        '_filename2shape',
+        '_filename2annot_path',
+        '_filename2img_path',
     ]
 
     def __init__(
@@ -32,26 +40,26 @@ class BaseStatisticsGetter:
             filenames: List[str],
             label2filenames: Dict[str, List[str]],
             label2objects_num: Dict[str, int],
-            label2images_num: Dict[str, int],
-            image2objects: Dict[str, 'ObjectsInfo'],
+            filename2objects: Dict[str, List['ObjectInfo']],
+            filename2shape: Dict[str, ImgShape],
+            filename2annot_path: Dict[str, str],
+            filename2img_path: Dict[str, str],
     ) -> None:
         self._labels_text = labels_text
         self._filenames = filenames
         self._label2filenames = label2filenames
         self._label2objects_num = label2objects_num
-        self._label2images_num = label2images_num
-        self._image2objects = image2objects
+        self._filename2objects = filename2objects
+        self._filename2shape = filename2shape
+        self._filename2annot_path = filename2annot_path
+        self._filename2img_path = filename2img_path
 
     @property
     def images_num(self) -> int:
         '''
         get the total number of images.
         '''
-        total_img_num = 0
-        for img_num in self._label2images_num.values():
-            total_img_num += img_num
-
-        return total_img_num
+        return len(self._filenames)
 
     @property
     def objects_num(self) -> int:
@@ -71,7 +79,7 @@ class BaseStatisticsGetter:
         '''
         total_difficult = 0
         for filename in self._filenames:
-            total_difficult += sum(self.image2difficult(filename))
+            total_difficult += sum(self.filename2difficult(filename))
 
         return total_difficult
 
@@ -82,7 +90,7 @@ class BaseStatisticsGetter:
         '''
         total_truncated = 0
         for filename in self._filenames:
-            total_truncated += sum(self.image2truncated(filename))
+            total_truncated += sum(self.filename2truncated(filename))
 
         return total_truncated
 
@@ -106,6 +114,7 @@ class BaseStatisticsGetter:
             dataset_dir: Union[str, Path],
             process_annot_fn: Callable[[Union[str, Path]], 'AnnotationInfo'],
             annot_format: str,
+            img_format: str,
     ) -> 'BaseStatisticsGetter':
         '''
         create BaseStatisticsGetter.
@@ -131,35 +140,49 @@ class BaseStatisticsGetter:
         filenames: List[str] = []
         label2filenames: Dict[str, List[str]] = {}
         label2objects_num: Dict[str, int] = {}
-        label2images_num: Dict[str, int] = {}
-        image2objects: Dict[str, 'ObjectsInfo'] = {}
+        filename2objects: Dict[str, List[ObjectInfo]] = {}
+        filename2shape: Dict[str, ImgShape] = {}
+        filename2annot_path: Dict[str, str] = {}
+        filename2img_path: Dict[str, str] = {}
 
         for annot in tqdm(annot_files):
-            annot_info = process_annot_fn(annot)
-            filename = annot.stem
-            filenames.append(filename)
+            file_name, shape, bboxes, labels_text, difficult, truncated = \
+                process_annot_fn(annot)
+
+            # add each filenames.
+            filenames.append(file_name)
+
+            # add filename2shape
+            filename2shape[file_name] = shape
 
             # count the number of objects tagged by label.
-            for label_text in annot_info.labels_text:
+            for label_text in labels_text:
                 if label_text in label2objects_num:
                     label2objects_num[label_text] += 1
                 else:
                     label2objects_num[label_text] = 1
 
             # count the number of images taggeed by label.
-            for label_text in set(annot_info.labels_text):
-                label2filenames[label_text].append(filename)
-                if label_text in label2images_num:
-                    label2images_num[label_text] += 1
+            for label_text in set(labels_text):
+                if label_text in label2filenames:
+                    label2filenames[label_text].append(file_name)
                 else:
-                    label2images_num[label_text] = 1
+                    label2filenames[label_text] = [file_name]
+
+            # label2annot_path
+            filename2annot_path[file_name] = str(annot)
+
+            # label2img_path
+            filename2img_path[file_name] = cls._annot2img(annot, img_format)
 
             # create statistics information about bboxes.
-            bboxes = annot_info.bboxes
-            difficult = annot_info.difficult
-            truncated = annot_info.truncated
-            objects_info = ObjectsInfo(bboxes, difficult, truncated)
-            image2objects[filename] = objects_info
+            for label_text, bbox, diff, trunc in zip(labels_text, bboxes, difficult, truncated):
+                object_info = ObjectInfo(label_text, bbox, diff, trunc)
+
+                if file_name in filename2objects:
+                    filename2objects[file_name].append(object_info)
+                else:
+                    filename2objects[file_name] = [object_info]
 
         labels_text = list(label2objects_num.keys())
         return cls(
@@ -167,9 +190,59 @@ class BaseStatisticsGetter:
             filenames,
             label2filenames,
             label2objects_num,
-            label2images_num,
-            image2objects,
+            filename2objects,
+            filename2shape,
+            filename2annot_path,
+            filename2img_path,
         )
+
+    @classmethod
+    def _annot2img(
+            cls,
+            annot_path: Union[Path, str],
+            img_format: str,
+    ) -> str:
+        '''
+        get image path from annotation path.
+        image path has to be <parent of parent dir>/<IAMGE_DIR>/<image path>
+
+        :param annot_path: annotation path.
+        :param img_format: format of image.
+        :return image path.
+        '''
+        if isinstance(annot_path, str):
+            annot_path = Path(annot_path)
+        assert annot_path.exists()
+
+        img_file = annot_path.with_suffix(img_format).name
+        img_path = annot_path.parents[1] / IMAGE_DIR / img_file
+        img_raw_path = str(img_path)
+
+        return img_raw_path
+
+    @classmethod
+    def _img2annot(
+            cls,
+            img_path: Union[str, Path],
+            annot_format: str,
+    ) -> str:
+        '''
+        get annotation path from image path.
+        image path has to be <parent of parent dir>/<ANNOTATION_DIR>/<annotation path>
+
+        :param img_path: image path.
+        :param annot_format: format of annotation.
+        :return: annotation path.
+        '''
+        if isinstance(img_path, str):
+            img_path = Path(img_path)
+        assert img_path.exists()
+
+        annot_file = img_path.with_suffix(annot_format).name
+        annot_path = img_path.parents[1] / ANNOTATION_DIR / annot_file
+        annot_raw_path = str(annot_path)
+
+        return annot_raw_path
 
     @classmethod
     def load(cls, path: Union[str, Path]) -> 'BaseStatisticsGetter':
@@ -195,7 +268,7 @@ class BaseStatisticsGetter:
         :param label: label name to get the number of images.
         :return: the number of images.
         '''
-        return self._label2images_num[label]
+        return len(self._label2filenames[label])
 
     def label2objects_num(self, label: str) -> int:
         '''
@@ -204,6 +277,7 @@ class BaseStatisticsGetter:
         :param label: label name to get the number of images.
         :return: the number of images.
         '''
+
         return self._label2objects_num[label]
 
     def label2filenames(self, label: str,) -> List[str]:
@@ -215,116 +289,127 @@ class BaseStatisticsGetter:
         '''
         return self._label2filenames[label]
 
-    def _img2annot(
-            self,
-            img_path: Union[str, Path],
-            annot_format: str,
-    ) -> Path:
+    def filename2image_path(self, filename: str) -> str:
         '''
-        get annotation path from image path.
-        image path has to be <parent of parent dir>/<ANNOTATION_DIR>/<annotation path>
+        get the image path from filename.
 
-        :param img_path: image path.
-        :param annot_format: format of annotation.
-        :return: annotation path.
+        :param filename: filename for getting image path.
+        :return: path to image.
         '''
-        if isinstance(img_path, str):
-            img_path = Path(img_path)
-        assert img_path.exists()
+        return self._filename2img_path[filename]
 
-        annot_file = img_path.with_suffix(annot_format).name
-        annot_path = img_path.parents[1] / ANNOTATION_DIR / annot_file
-
-        return annot_path
-
-    def _annot2img(
-            self,
-            annot_path: Union[Path, str],
-            img_format: str,
-    ) -> Path:
+    def filename2annotation_path(self, filename: str) -> str:
         '''
-        get image path from annotation path.
-        image path has to be <parent of parent dir>/<IAMGE_DIR>/<image path>
+        get the image path from filename.
 
-        :param annot_path: annotation path.
-        :param img_format: format of image.
-        :return image path.
+        :param filename: filename for getting annotation path.
+        :return: path to image.
         '''
-        if isinstance(annot_path, str):
-            annot_path = Path(annot_path)
-        assert annot_path.exists()
+        return self._filename2annot_path[filename]
 
-        img_file = annot_path.with_suffix(img_format).name
-        img_path = annot_path.parents[1] / IMAGE_DIR / img_file
-
-        return img_path
-
-    def image2objects(self, filename: str) -> List[Dict[str, int]]:
+    def filename2objects(self, filename: str) -> List['ObjectInfo']:
         '''
-        get the labels specified in an image.
+        get the labels specified in the designated annotation.
 
         :param filename: filename for getting object information.
-        :return: dict of label_text and bboxes.
+        :return: list of objectinfo.
         '''
-        objects_info = self._image2objects[filename]
-        return objects_info.bboxes
+        objects_info = self._filename2objects[filename]
 
-    def image2bboxes(self, filename: str) -> List[Dict[str, int]]:
+        return objects_info
+
+    def filename2shape(self, filename: str) -> ImgShape:
         '''
-        get bboxes specified in the image.
+        get the image shape from specified filename.
+
+        :param filename: filename for getting object information.
+        :return: image shape
+        '''
+        return self._filename2shape[filename]
+
+    def filename2labels(self, filename: str) -> List[str]:
+        '''
+        get the labels specified in the designated annotation.
+
+        :param filename: filename for getting object information.
+        :return: list of labels.
+        '''
+        labels_text_list = []
+        objects_info = self._filename2objects[filename]
+        for obj_info in objects_info:
+            labels_text_list.append(obj_info.label_text)
+
+        return labels_text_list
+
+    def filename2bboxes(self, filename: str) -> CoorList:
+        '''
+        get bboxes specified in the designamted annotation.
 
         :param filename: filename for getting bboxes.
-        :return: list of bboxes in the image.
+        :return: dict of label_text and bbox.
         '''
-        objects_info = self._image2objects[filename]
-        return objects_info.bboxes
 
-    def image2difficult(self, filename: str) -> List[bool]:
+        bboxes = []
+        objects_info = self._filename2objects[filename]
+        for obj_info in objects_info:
+            bboxes.append(obj_info.bbox)
+
+        return bboxes
+
+    def filename2difficult(self, filename: str) -> List[bool]:
         '''
-        get difficult specified in the image.
+        get difficult specified in the designated annotation.
 
         :param filename: filename for getting difficult.
         :return: list of difficult in the image.
         '''
-        objects_info = self._image2objects[filename]
-        difficult = list(map(bool, objects_info.difficult))
+        objects_info: List[ObjectInfo] = self._filename2objects[filename]
 
-        return difficult
+        difficult_list = []
+        for obj_info in objects_info:
+            difficult_list.append(obj_info.difficult)
 
-    def image2truncated(self, filename: str) -> List[bool]:
+        return difficult_list
+
+    def filename2truncated(self, filename: str) -> List[bool]:
         '''
-        get truncated specified in the image.
+        get truncated specified in the designated annotation.
 
         :param filename: filename for getting truncated.
         :return: list of truncated in the image.
         '''
-        objects_info = self._image2objects[filename]
-        truncated = list(map(bool, objects_info.truncated))
+        objects_info: List[ObjectInfo] = self._filename2objects[filename]
 
-        return truncated
+        truncated_list = []
+        for obj_info in objects_info:
+            truncated_list.append(obj_info.truncated)
+
+        return truncated_list
 
     def absolute2relative_bbox_position(
             self,
+            bboxes: List[ImgShape],
             img_shape: Tuple[int, int, int],
-            bboxes: List[Mapping[str, int]],
+            precision: int=3,
     ) -> List[Dict[str, float]]:
         '''
         convert absolute position of bbox into relative position.
 
-        :param img_shape: image shape of target image.
         :param bboxes: list of bounding boxes.
+        :param img_shape: image shape of target image.
+        :param precision: the nuber of decimal.
         :return: converted bounding boxes, which are relative position in an image.
         '''
-        img_height, img_width, img_channel = img_shape
+        img_width, img_height, img_channel = img_shape
 
         relative_bboxes = []
         for bbox in bboxes:
             relative_bboxes.append(
                 {
-                    BBOX_X_MIN: float(bbox[BBOX_X_MIN]) / img_width,
-                    BBOX_X_MAX: float(bbox[BBOX_X_MAX]) / img_width,
-                    BBOX_Y_MIN: float(bbox[BBOX_Y_MIN]) / img_height,
-                    BBOX_Y_MAX: float(bbox[BBOX_Y_MAX]) / img_height,
+                    BBOX_X_MIN: round(bbox[BBOX_X_MIN] / img_width, precision),
+                    BBOX_X_MAX: round(bbox[BBOX_X_MAX] / img_width, precision),
+                    BBOX_Y_MIN: round(bbox[BBOX_Y_MIN] / img_height, precision),
+                    BBOX_Y_MAX: round(bbox[BBOX_Y_MAX] / img_height, precision),
                 }
             )
 
@@ -332,13 +417,14 @@ class BaseStatisticsGetter:
 
 class AnnotationInfo(NamedTuple):
     filename: str
-    shape: Tuple[int, int, int]
-    bboxes: List[Dict[str, int]]
+    shape: ImgShape
+    bboxes: CoorList
     labels_text: List[str]
     difficult: List[int]
     truncated: List[int]
 
-class ObjectsInfo(NamedTuple):
-    bboxes: List[Dict[str, int]]
-    difficult: List[int]
-    truncated: List[int]
+class ObjectInfo(NamedTuple):
+    label_text: str
+    bbox: Coor
+    difficult: bool
+    truncated: bool

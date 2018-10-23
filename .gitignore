@@ -1,13 +1,23 @@
 ### https://raw.github.com/github/gitignore/9931a0607752664877a66bb220f11aa285dc1047/Python.gitignore
 
 MEAT_MASTER2018/
-/data/labels
+data/labels
+data/processed/
+data/pictures/
+data/movies/
+data/
 /find_meats/detector/hog
-!/find_meats/data/
-!data/labelimg/predefined_classes.txt
 .coverage
 coverage.xml
-/tmp/*
+tmp/*
+tmp/data/*
+!dataset/
+!dataset/Annotations/*
+!dataset/JPEGImages/*
+!data/labelimg/predefined_classes.txt
+!/find_meats/data/
+
+
 .DS_Store
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -19,11 +29,6 @@ codecov.yml
 *.mp4
 *.MOV
 *.avi
-
-*.jpg
-*.png
-*.xml
-*.txt
 
 # C extensions
 *.so
