@@ -1,4 +1,3 @@
-from argparse import ArgumentParser
 from typing import Union, List, Dict, Callable
 import xml.etree.ElementTree as ET
 from pathlib import Path
