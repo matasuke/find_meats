@@ -20,7 +20,7 @@ opencv-python = "*"
 tqdm = "*"
 PyYAML = "*"
 tensorflow = {version = "==1.11.0", sys_platform = "== 'darwin'"}
-tensorflow-gpu = {version = "==1.4.0", sys_platform = "== 'linux'"}
+tensorflow-gpu = {version = "==1.5.0", sys_platform = "== 'linux'"}
 
 [dev-packages]
 codecov = "*"

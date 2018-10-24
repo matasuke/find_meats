@@ -20,12 +20,13 @@ VALID_DIR = 'valid'
 TEST_DIR = 'test'
 
 # image format to be allowed.
-IMG_FORMAT = '.jpg'
+ALLOWED_IMG_FORMAT = ['.jpg', '.jpeg']
+TARGET_IMG_FORMAT = '.jpg'
 ANNOT_FORMAT = '.xml'
 
 # regular expression to get all annotations and images.
 ANNOT_REG_EXP = '**/*%s' % ANNOT_FORMAT
-IMG_REG_EXP = '**/*%s' % IMG_FORMAT
+IMG_REG_EXP = '**/*%s' % ALLOWED_IMG_FORMAT
 
 RANDOM_SEED = 4545
 
@@ -109,15 +110,18 @@ def _convert(
     for index, annot_path in tqdm(enumerate(source_annot_paths)):
         if name_indexing:
             target_annot_path = _get_output_file_name(target_annot_dir, index, ANNOT_FORMAT)
-            target_img_path = _get_output_file_name(target_img_dir, index, IMG_FORMAT)
+            target_img_path = _get_output_file_name(target_img_dir, index, TARGET_IMG_FORMAT)
         else:
             target_annot_path = target_annot_dir / f'{annot_path.stem}{ANNOT_FORMAT}'
-            target_img_path = target_img_dir / f'{annot_path.stem}{IMG_FORMAT}'
+            target_img_path = target_img_dir / f'{annot_path.stem}{TARGET_IMG_FORMAT}'
 
-        source_img_name = '**/%s' % annot_path.with_suffix(IMG_FORMAT).name
+        source_img_name = ['**/%s' % annot_path.with_suffix(img_format).name for img_format in ALLOWED_IMG_FORMAT]
         source_img_path = [
-            img_path for source_dir in source_img_dirs for img_path in source_dir.glob(source_img_name)
+            img_path for source_dir in source_img_dirs
+            for img_name_tmp in source_img_name
+            for img_path in source_dir.glob(img_name_tmp) if img_path.exists()
         ] or None
+
         if source_img_path:
             shutil.copy(source_img_path[0], target_img_path)
             _process_annotation(annot_path, target_annot_path, dataset_name)
