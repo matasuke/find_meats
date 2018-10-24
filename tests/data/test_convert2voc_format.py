@@ -12,7 +12,7 @@ from find_meats.data.convert2voc_format import (
     convert2voc_format,
 )
 from find_meats.data.convert2voc_format import (
-    IMG_FORMAT,
+    TARGET_IMG_FORMAT,
     ANNOT_FORMAT,
     ANNOT_REG_EXP,
     IMG_REG_EXP,
@@ -50,8 +50,8 @@ def test_process_annotation(tmpdir):
 
 def test_get_output_file_name():
     rand = randint(0, 100)
-    EXPECTED = Path('%s/%05d%s' % (TEST_OUTPUT_DIR, rand, IMG_FORMAT))
-    output_file_name = _get_output_file_name(TEST_OUTPUT_DIR, rand, IMG_FORMAT)
+    EXPECTED = Path('%s/%05d%s' % (TEST_OUTPUT_DIR, rand, TARGET_IMG_FORMAT))
+    output_file_name = _get_output_file_name(TEST_OUTPUT_DIR, rand, TARGET_IMG_FORMAT)
 
     assert output_file_name == EXPECTED
 
@@ -88,7 +88,7 @@ def test_convert(tmpdir):
 
     for index in range(len(source_annot_paths)):
         target_annot_path = _get_output_file_name(tmp_annot_dir, index, ANNOT_FORMAT)
-        target_img_path = _get_output_file_name(tmp_img_dir, index, IMG_FORMAT)
+        target_img_path = _get_output_file_name(tmp_img_dir, index, TARGET_IMG_FORMAT)
 
         assert target_annot_path.exists()
         assert target_img_path.exists()
@@ -117,7 +117,7 @@ def test_convert2voc_format(tmpdir):
 
     for index in range(source_annot_paths_len):
         target_annot_path = _get_output_file_name(tmp_annot_dir, index, ANNOT_FORMAT)
-        target_img_path = _get_output_file_name(tmp_img_dir, index, IMG_FORMAT)
+        target_img_path = _get_output_file_name(tmp_img_dir, index, TARGET_IMG_FORMAT)
 
         assert target_annot_path.exists()
         assert target_img_path.exists()
