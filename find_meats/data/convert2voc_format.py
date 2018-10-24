@@ -20,7 +20,7 @@ VALID_DIR = 'valid'
 TEST_DIR = 'test'
 
 # image format to be allowed.
-ALLOWED_IMG_FORMAT = ['.jpg', '.jpeg']
+ALLOWED_IMG_FORMAT = ['.jpg', '.jpeg', '.JPG', '.JPEG']
 TARGET_IMG_FORMAT = '.jpg'
 ANNOT_FORMAT = '.xml'
 
