@@ -6,7 +6,6 @@ import xml.etree.ElementTree as ET
 from find_meats.data.convert2voc_format import (
     _process_annotation,
     _get_output_file_name,
-    _train_test_split,
     _prepare_dirs,
     _convert,
     convert2voc_format,
@@ -45,7 +44,7 @@ def test_process_annotation(tmpdir):
     path = root.find('path')
 
     assert folder_name == DATASET_NAME
-    assert file_name == tmp_file.name
+    assert file_name == tmp_file.with_suffix(TARGET_IMG_FORMAT).name
     assert path == None
 
 def test_get_output_file_name():
@@ -54,28 +53,6 @@ def test_get_output_file_name():
     output_file_name = _get_output_file_name(TEST_OUTPUT_DIR, rand, TARGET_IMG_FORMAT)
 
     assert output_file_name == EXPECTED
-
-def test_train_test_split():
-    data_list = list(range(100))
-    SPLIT_NUM = 40
-    EXPECTED_TRAIN = data_list[SPLIT_NUM:]
-    EXPECTED_TEST = data_list[:SPLIT_NUM]
-
-    list_train, list_test = _train_test_split(data_list, test_num=SPLIT_NUM, shuffle=False)
-
-    assert list_train == EXPECTED_TRAIN
-    assert list_test == EXPECTED_TEST
-
-def test_train_test_split_with_shuffle():
-    data_list = list(range(100))
-    SPLIT_NUM = 40
-    EXPECTED_TRAIN_NUM = 60
-    EXPECTED_TEST_NUM = 40
-
-    train_list, test_list = _train_test_split(data_list, test_num=SPLIT_NUM, shuffle=True)
-
-    assert len(train_list) == EXPECTED_TRAIN_NUM
-    assert len(test_list) == EXPECTED_TEST_NUM
 
 @pytest.mark.skipif(app_env=='CI', reason="CI environment doesn't have tmp dir")
 def test_convert(tmpdir):

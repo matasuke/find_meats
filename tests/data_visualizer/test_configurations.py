@@ -10,7 +10,7 @@ from find_meats.data_visualizer.base_statistics_getter import (
 TEST_DATASET = Path('tmp', 'dataset')
 ANNOTATION_DIR_PATH = Path(TEST_DATASET, ANNOTATION_DIR)
 IMG_DIR_PATH = Path(TEST_DATASET, IMAGE_DIR)
-SAVE_PATH = Path(TEST_DATASET, 'dataset.plk')
+SAVE_PATH = Path(TEST_DATASET, 'dataset.pkl')
 ANNOTATION_PATH = Path(ANNOTATION_DIR_PATH, '00004.xml')
 
 EXPECTED_LABELS_TEXT = [

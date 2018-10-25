@@ -1,20 +1,15 @@
 ### https://raw.github.com/github/gitignore/9931a0607752664877a66bb220f11aa285dc1047/Python.gitignore
 
 MEAT_MASTER_2018/
-MEAT_MASTER_2018_non_indexing/
 data/labels
 data/processed/
 data/pictures/
 data/movies/
-/find_meats/detector/hog
 .coverage
 coverage.xml
 tmp/*
 tmp/data/*
-!dataset/
-!dataset/Annotations/*
-!dataset/JPEGImages/*
-!data/labelimg/predefined_classes.txt
+tmp/dataset/dataset.pkl
 !/find_meats/data/
 
 

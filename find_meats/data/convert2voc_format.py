@@ -3,7 +3,6 @@ from pathlib import Path
 import shutil
 from tqdm import tqdm
 from typing import Optional, Union, Tuple, List
-import random
 import xml.etree.ElementTree as ET
 
 # path to source sub directories.
@@ -28,15 +27,17 @@ ANNOT_FORMAT = '.xml'
 ANNOT_REG_EXP = '**/*%s' % ANNOT_FORMAT
 IMG_REG_EXP = '**/*%s' % ALLOWED_IMG_FORMAT
 
-RANDOM_SEED = 4545
 
 def _process_annotation(
         annotation_path: Union[str, Path],
         target_path: Union[str, Path],
         dataset_name: str,
 ) -> None:
-    annotation_path = Path(annotation_path)
-    target_path = Path(target_path)
+    if isinstance(annotation_path, str):
+        annotation_path = Path(annotation_path)
+    if isinstance(target_path, str):
+        target_path = Path(target_path)
+    assert annotation_path.exists()
 
     # prepare xml parser.
     tree = ET.parse(annotation_path.as_posix())
@@ -48,7 +49,7 @@ def _process_annotation(
     if folder_name is not None:
         folder_name.text = dataset_name
     if file_name is not None:
-        file_name.text = target_path.name
+        file_name.text = target_path.with_suffix(TARGET_IMG_FORMAT).name
     if path is not None:
         root.remove(path)
 
@@ -62,17 +63,6 @@ def _get_output_file_name(
     output_dir = Path(output_dir)
     file_name = '%05d%s' % (index, suffix)
     return output_dir / file_name
-
-def _train_test_split(
-        data_list: List,
-        test_num: int,
-        shuffle: bool=True,
-) -> Tuple:
-    if shuffle:
-        random.seed(RANDOM_SEED)
-        random.shuffle(data_list)
-
-    return data_list[test_num:], data_list[:test_num]
 
 def _prepare_dirs(
         base_dir: Union[str, Path],
@@ -107,10 +97,11 @@ def _convert(
     if not isinstance(source_img_dirs, list):
         source_img_dirs = [source_img_dirs]
 
-    for index, annot_path in tqdm(enumerate(source_annot_paths)):
+    output_index = 0
+    for annot_path in tqdm(source_annot_paths):
         if name_indexing:
-            target_annot_path = _get_output_file_name(target_annot_dir, index, ANNOT_FORMAT)
-            target_img_path = _get_output_file_name(target_img_dir, index, TARGET_IMG_FORMAT)
+            target_annot_path = _get_output_file_name(target_annot_dir, output_index, ANNOT_FORMAT)
+            target_img_path = _get_output_file_name(target_img_dir, output_index, TARGET_IMG_FORMAT)
         else:
             target_annot_path = target_annot_dir / f'{annot_path.stem}{ANNOT_FORMAT}'
             target_img_path = target_img_dir / f'{annot_path.stem}{TARGET_IMG_FORMAT}'
@@ -125,6 +116,7 @@ def _convert(
         if source_img_path:
             shutil.copy(source_img_path[0], target_img_path)
             _process_annotation(annot_path, target_annot_path, dataset_name)
+            output_index += 1
 
 # TODO: apply exclusion file.
 # TODO: add validation and test split. this has to consider data distribution.
@@ -135,7 +127,6 @@ def convert2voc_format(
         dataset_name: str='MEAT_MASTER2018',
         name_indexing: bool=True,
         validation_size: Optional[int]=None,
-        test_size: Optional[int]=None,
 ) -> None:
     '''
     convert original format created for MEAT2018 to VOC format.
@@ -144,14 +135,12 @@ def convert2voc_format(
     :param output_dir: path to output directory.
     :param dataset_name: dataset name to be saved.
     :param validation_size: the size of validation dataset to be contained.
-    :param test_size: the size of test dataset to be contained.
     '''
     source_base_dir = Path(dataset_dir)
     target_base_dir = Path(output_dir) / dataset_name
 
     assert source_base_dir.exists()
     assert validation_size is None or isinstance(validation_size, int)
-    assert test_size is None or isinstance(test_size, int)
 
     target_annot_dir, target_img_dir = _prepare_dirs(target_base_dir, TRAIN_DIR)
 
@@ -179,7 +168,6 @@ if __name__ == '__main__':
     parser.add_argument('--dataset_dir', metavar='str', type=str, required=True)
     parser.add_argument('--name_indexing', action='store_true')
     parser.add_argument('--validation_size', metavar='INT', type=int, default=None)
-    parser.add_argument('--test_size', metavar='INT', type=int, default=None)
     args = parser.parse_args()
 
     convert2voc_format(
@@ -188,5 +176,4 @@ if __name__ == '__main__':
         dataset_name=args.dataset_name,
         name_indexing=args.name_indexing,
         validation_size=args.validation_size,
-        test_size=args.test_size,
     )
