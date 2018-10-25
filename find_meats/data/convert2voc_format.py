@@ -2,7 +2,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 import shutil
 from tqdm import tqdm
-from typing import Optional, Union, Tuple, List
+from typing import Union, Tuple, List
 import xml.etree.ElementTree as ET
 
 # path to source sub directories.
