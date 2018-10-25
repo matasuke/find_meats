@@ -1,0 +1,59 @@
+item {
+  id: 1
+  name: 'raw_beaf'
+}
+
+item {
+  id: 2
+  name: 'half_cooked_beaf'
+}
+
+item {
+  id: 3
+  name: 'cooked_beaf'
+}
+
+item {
+  id: 4
+  name: 'over_cooked_beaf'
+}
+
+item {
+  id: 5
+  name: 'raw_pork'
+}
+
+item {
+  id: 6
+  name: 'half_cooked_pork'
+}
+
+item {
+  id: 7
+  name: 'cooked_pork'
+}
+
+item {
+  id: 8
+  name: 'over_cooked_pork'
+}
+
+item {
+  id: 9
+  name: 'raw_chicken'
+}
+
+item {
+  id: 10
+  name: 'half_cooked_chicken'
+}
+
+item {
+  id: 11
+  name: 'cooked_chicken'
+}
+
+item {
+  id: 12
+  name: 'over_cooked_chicken'
+}
