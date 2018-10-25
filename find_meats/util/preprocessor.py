@@ -29,5 +29,7 @@ def train_test_split(
     if test_ratio is not None:
         test_num = int(test_ratio * len(data_list))
 
-    split_point = len(data_list) - test_num
+    if test_num is not None:
+        split_point = len(data_list) - test_num
+
     return data_list[:split_point], data_list[split_point:]
