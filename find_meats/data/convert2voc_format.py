@@ -126,7 +126,6 @@ def convert2voc_format(
         output_dir: str,
         dataset_name: str='MEAT_MASTER2018',
         name_indexing: bool=True,
-        validation_size: Optional[int]=None,
 ) -> None:
     '''
     convert original format created for MEAT2018 to VOC format.
@@ -134,13 +133,11 @@ def convert2voc_format(
     :param dataset_dir: path to original dataset directory which is converted to VOC format.
     :param output_dir: path to output directory.
     :param dataset_name: dataset name to be saved.
-    :param validation_size: the size of validation dataset to be contained.
     '''
     source_base_dir = Path(dataset_dir)
     target_base_dir = Path(output_dir) / dataset_name
 
     assert source_base_dir.exists()
-    assert validation_size is None or isinstance(validation_size, int)
 
     target_annot_dir, target_img_dir = _prepare_dirs(target_base_dir, TRAIN_DIR)
 
@@ -167,7 +164,6 @@ if __name__ == '__main__':
     parser.add_argument('--output_dir', metavar='str', type=str, required=True)
     parser.add_argument('--dataset_dir', metavar='str', type=str, required=True)
     parser.add_argument('--name_indexing', action='store_true')
-    parser.add_argument('--validation_size', metavar='INT', type=int, default=None)
     args = parser.parse_args()
 
     convert2voc_format(
@@ -175,5 +171,4 @@ if __name__ == '__main__':
         output_dir=args.output_dir,
         dataset_name=args.dataset_name,
         name_indexing=args.name_indexing,
-        validation_size=args.validation_size,
     )

@@ -9,7 +9,7 @@ YAML_FORMAT = ['.yml', '.yaml']
 
 def generate_all_files(
     base_dir: Union[str, Path],
-    allowed_suffix: List[str]=None,
+    allowed_suffix: List[str] = None,
 ) -> Generator[Path, None, None]:
     '''
     get all files recursively. it yield values one by one.

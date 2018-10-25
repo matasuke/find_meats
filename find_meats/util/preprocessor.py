@@ -5,9 +5,9 @@ RANDOM_SEED = 4545
 
 def train_test_split(
         data_list: List,
-        test_num: int=None,
-        test_ratio: float=None,
-        shuffle: bool=True,
+        test_num: int = None,
+        test_ratio: float = None,
+        shuffle: bool = True,
 ) -> Tuple:
     '''
     split data into train and test.

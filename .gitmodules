@@ -1,0 +1,3 @@
+[submodule "tf_api"]
+	path = find_meats/detector
+	url = https://github.com/matasuke/models
