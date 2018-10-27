@@ -13,6 +13,7 @@ tmp/dataset/dataset.pkl
 !/find_meats/data/
 data/detector/data/meat_master_train.record
 data/detector/data/meat_master_val.record
+*.record
 
 .DS_Store
 # Byte-compiled / optimized / DLL files
