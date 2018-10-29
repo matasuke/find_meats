@@ -14,6 +14,7 @@ tmp/dataset/dataset.pkl
 data/object_detection_api/graphs
 *.record
 model.ckpt*
+data/object_detection_api/models/ssdlite_meat_master_20181028/inference_model/*
 
 .DS_Store
 # Byte-compiled / optimized / DLL files
