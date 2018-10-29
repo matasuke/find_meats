@@ -11,9 +11,9 @@ tmp/*
 tmp/data/*
 tmp/dataset/dataset.pkl
 !/find_meats/data/
-data/detector/data/meat_master_train.record
-data/detector/data/meat_master_val.record
+data/object_detection_api/graphs
 *.record
+model.ckpt*
 
 .DS_Store
 # Byte-compiled / optimized / DLL files
