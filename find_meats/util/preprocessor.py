@@ -1,5 +1,7 @@
 import random
 from typing import List, Tuple
+import cv2
+import numpy as np
 
 RANDOM_SEED = 4545
 
@@ -33,3 +35,17 @@ def train_test_split(
         split_point = len(data_list) - test_num
 
     return data_list[:split_point], data_list[split_point:]
+
+def preprocess_img(
+        source_image: 'np.ndarray',
+        img_shape: Tuple[int, int]=(300, 300),
+        img_mean: float=127.5,
+        img_scale: float=0.007843,
+):
+    resized_image = cv2.resize(source_image, img_shape)
+
+    # trasnform values from range 0-255 to range -1.0 - 1.0
+    resized_image = resized_image - img_mean
+    resized_image = resized_image * img_scale
+
+    return resized_image
