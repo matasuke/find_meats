@@ -1,7 +1,6 @@
 import random
 from typing import List, Tuple
 import cv2
-import numpy as np
 
 RANDOM_SEED = 4545
 
