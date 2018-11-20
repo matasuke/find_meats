@@ -1,6 +1,7 @@
 import random
 from typing import List, Tuple
 import cv2
+import numpy as np
 
 RANDOM_SEED = 4545
 
@@ -36,7 +37,7 @@ def train_test_split(
     return data_list[:split_point], data_list[split_point:]
 
 def preprocess_img(
-        source_image: 'np.ndarray',
+        source_image: np.ndarray,
         img_shape: Tuple[int, int]=(300, 300),
         img_mean: float=127.5,
         img_scale: float=0.007843,
