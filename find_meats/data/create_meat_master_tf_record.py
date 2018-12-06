@@ -124,13 +124,16 @@ def main(_):
     annotations_dir = Path(dataset_dir, ANNOTATION_DIR)
     images_dir = Path(dataset_dir, IMAGE_DIR)
     output_dir = Path(FLAGS.output_dir)
+    if not output_dir.exists():
+        output_dir.mkdir(parents=True)
+
     train_output_path = Path(output_dir, f'{FLAGS.output_name}_train.record')
     val_output_path = Path(output_dir, f'{FLAGS.output_name}_val.record')
     label_map_dict = label_map_util.get_label_map_dict(FLAGS.label_map_path)
     examples_path = Path(FLAGS.examples_path)
 
     examples = dataset_util.read_examples_list(str(examples_path))
-    train_examples, val_examples = train_test_split(examples, test_ratio=FLAGS.valid_ratio)
+    train_examples, val_examples = train_test_split(examples, test_ratio=FLAGS.val_ratio)
 
     create_tf_record(train_output_path, annotations_dir, images_dir, label_map_dict, train_examples)
     create_tf_record(val_output_path, annotations_dir, images_dir, label_map_dict, val_examples)
