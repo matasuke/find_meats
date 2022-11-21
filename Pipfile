@@ -24,7 +24,7 @@ contextlib2 = "*"
 pillow = "*"
 lxml = '*'
 matplotlib = "*"
-tensorflow = {version = "==1.11.0", sys_platform = "== 'darwin'"}
+tensorflow = {version = "==2.9.3", sys_platform = "== 'darwin'"}
 tensorflow-gpu = {version = "==1.11.0", sys_platform = "== 'linux'"}
 
 [dev-packages]
